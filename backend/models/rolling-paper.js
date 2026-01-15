@@ -32,13 +32,12 @@ const rollingPaperSchema = new mongoose.Schema({
   }
 });
 
-rollingPaperSchema.pre('save', function(next) {
+rollingPaperSchema.pre('save', function() {
   if (!this.expiresAt) {
     const expirationDate = new Date(this.createdAt);
     expirationDate.setDate(expirationDate.getDate() + CONFIG.TTL_DAYS);
     this.expiresAt = expirationDate;
   }
-  next();
 });
 
 const RollingPaper = mongoose.model('RollingPaper', rollingPaperSchema);
