@@ -15,14 +15,15 @@ export const PageContainer = ({
       transition={{ duration: 0.3 }}
       className={cn(
         'min-h-screen w-full',
-        className
+        backgroundClass
       )}
       style={{ background: '#f9fafb' }}
     >
       <div
         className={cn(
           'relative min-h-screen w-full py-12 sm:py-20',
-          centered && 'flex flex-col items-center justify-center'
+          centered && 'flex flex-col items-center justify-center',
+          className
         )}
         style={{ paddingLeft: '20px', paddingRight: '20px' }}
       >

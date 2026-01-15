@@ -37,36 +37,36 @@ export const MessageForm = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       onSubmit={handleSubmit}
-      className="w-full"
+      className="w-full space-y-6"
     >
       <div className="relative">
         <textarea
           value={content}
           onChange={handleChange}
           placeholder={MESSAGES.messagePlaceholder}
-          rows={4}
+          rows={5}
           className={cn(
-            'input-modern w-full resize-none',
+            'input-modern w-full resize-none pr-16',
             inputClass
           )}
           disabled={isLoading}
         />
-        <span className="absolute right-4 bottom-4 text-sm text-gray-400">
+        <span className="absolute right-4 bottom-4 text-xs text-gray-400 font-medium">
           {content.length}/{LIMITS.messageMaxLength}
         </span>
       </div>
-      <div className="mt-4 flex justify-end">
-        <Button
-          type="submit"
-          variant={buttonClass ? 'themed' : 'primary'}
-          themedClass={buttonClass}
-          isLoading={isLoading}
-          disabled={!content.trim()}
-          size="md"
-        >
-          보내기
-        </Button>
-      </div>
+
+      <Button
+        type="submit"
+        variant={buttonClass ? 'themed' : 'primary'}
+        themedClass={buttonClass}
+        isLoading={isLoading}
+        disabled={!content.trim()}
+        size="lg"
+        className="w-full"
+      >
+        💌 메시지 보내기
+      </Button>
     </motion.form>
   );
 };

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { usePaper } from '@/hooks/use-paper';
 import { useMessages } from '@/hooks/use-messages';
-import { getTheme, MESSAGES } from '@/constants';
+import { MESSAGES } from '@/constants';
 import { formatDday, copyToClipboard, cn } from '@/lib/utils';
 
 const PaperView = () => {
@@ -18,13 +18,6 @@ const PaperView = () => {
   const { messages, isLoading: isMessagesLoading, isSending, sendMessage } = useMessages(slug);
   const [copySuccess, setCopySuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [theme, setTheme] = useState(getTheme('theme_basic'));
-
-  useEffect(() => {
-    if (paper?.theme) {
-      setTheme(getTheme(paper.theme));
-    }
-  }, [paper]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -75,7 +68,7 @@ const PaperView = () => {
   }
 
   return (
-    <div className={cn("min-h-screen transition-colors duration-700", theme.background)}>
+    <div className="min-h-screen transition-colors duration-700 bg-slate-50">
       <PageContainer className="relative z-10 pt-40 pb-32 sm:pt-48 flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -85,32 +78,28 @@ const PaperView = () => {
           style={{ paddingLeft: '10px', paddingRight: '10px', maxWidth: '448px', paddingTop: '80px', paddingBottom: '80px' }}
         >
           {/* Main Card */}
-          <div className={cn("glass-card rounded-3xl px-8 py-10 sm:px-12 sm:py-12 transition-colors duration-500 min-h-[60vh] flex flex-col overflow-visible", theme.card)}>
+          <div className="bg-white rounded-3xl px-8 py-10 sm:px-12 sm:py-12 min-h-[60vh] flex flex-col overflow-visible border border-gray-100 shadow-sm">
 
             {/* Header Section */}
-            <div className="text-center">
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+            <div className="flex flex-col items-center">
+              <div
+                className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 bg-white border border-gray-100 shadow-sm"
                 style={{
-                  marginTop: '-30px',
-                  background: 'linear-gradient(135deg, #ffe4e6, #f3e8ff)',
-                  boxShadow: '0 8px 16px -4px rgba(254, 205, 211, 0.4)'
+                  marginTop: '-30px'
                 }}
               >
                 <span className="text-2xl">💌</span>
-              </motion.div>
+              </div>
 
               {paper.title && (
-                <h1 className={cn("text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-2", theme.text)}>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mt-8 mb-6">
                   {paper.title}
                 </h1>
               )}
 
               <div
-                className={cn("text-base font-bold text-gray-500 mb-2 flex items-center justify-center gap-2", theme.subtext)}
-                style={{ marginTop: '20px' }}
+                className="inline-flex items-center justify-center gap-2 text-purple-600 font-bold text-sm mb-4"
+                style={{ marginTop: '10px' }}
               >
                 <span>📅</span>
                 <span>{formatDday(paper.expiresAt)}</span>
@@ -145,7 +134,7 @@ const PaperView = () => {
             </div>
 
             {/* Spacer (Before Messages) */}
-            <div className="h-14"></div>
+            <div className={paper.title ? "h-10" : "h-20"}></div>
 
             {/* Message List */}
             <div className="flex-1 flex flex-col items-center w-full">
@@ -164,7 +153,7 @@ const PaperView = () => {
               <MessageList
                 messages={messages}
                 isLoading={isMessagesLoading}
-                cardClass="shadow-sm hover:shadow-md transition-shadow"
+                cardClass="shadow-sm hover:shadow transition-shadow"
                 gridClass="grid-cols-1 gap-4"
               />
             </div>
@@ -176,10 +165,9 @@ const PaperView = () => {
             <div className="text-center">
               <Button
                 onClick={() => setIsModalOpen(true)}
-                variant="themed"
-                themedClass={theme.button.includes('gradient') ? theme.button : "bg-gray-900 hover:bg-gray-800"}
+                variant="primary"
                 size="md"
-                className="w-[80%] max-w-xs mx-auto text-white font-bold text-sm shadow-md hover:shadow-lg h-12"
+                className="w-[80%] max-w-xs mx-auto font-bold text-sm shadow-sm hover:shadow h-12"
               >
                 ✍️ 메시지 남기기
               </Button>
@@ -213,7 +201,7 @@ const PaperView = () => {
             <MessageForm
               onSubmit={handleMessageSubmit}
               isLoading={isSending}
-              buttonClass={theme.button}
+              buttonClass=""
               inputClass="bg-gray-50 focus:bg-white"
             />
           </Modal>

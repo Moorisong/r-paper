@@ -36,7 +36,7 @@ export const MessageCard = ({
         ease: 'easeOut',
       }}
       className={cn(
-        'relative bg-white border border-gray-100 px-10 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 w-full',
+        'relative bg-white border border-gray-100 px-10 rounded-2xl shadow-sm hover:shadow transition-all duration-300 hover:-translate-y-1 w-full',
         cardClass
       )}
       style={{ paddingTop: '10px', paddingBottom: '10px' }}

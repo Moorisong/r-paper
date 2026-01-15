@@ -10,6 +10,7 @@ export const MessageList = ({
   cardClass = '',
   textClass = '',
   accentClass = '',
+  gridClass = '',
 }) => {
   if (isLoading) {
     return (
@@ -24,34 +25,21 @@ export const MessageList = ({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex flex-col items-center justify-center py-16 px-4"
+        className="flex flex-col items-center justify-center py-8 px-4"
+        style={{ marginTop: '5px' }}
       >
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-4"
-        >
-          <span className="text-3xl">💭</span>
-        </motion.div>
         <p className={cn(
-          'text-center text-lg font-bold text-gray-600',
+          'text-center text-sm font-medium text-gray-500',
           accentClass
         )}>
           {MESSAGES.noMessages}
-        </p>
-        <p className="text-gray-400 text-sm mt-1">
-          첫 번째 메시지를 남겨보세요
         </p>
       </motion.div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div className={cn("grid w-[90%] mx-auto place-items-center justify-center", gridClass || "grid-cols-1 sm:grid-cols-2 gap-5")}>
       {messages.map((message, index) => (
         <MessageCard
           key={message._id || index}
