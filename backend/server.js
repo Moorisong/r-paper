@@ -28,7 +28,10 @@ const limiter = rateLimit({
 });
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: '*', // 모든 출처 허용
+  credentials: false
+}));
 app.use(express.json());
 app.use(limiter);
 
