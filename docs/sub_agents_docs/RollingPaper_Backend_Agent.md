@@ -35,7 +35,7 @@
     - `RollingPaper` (TTL 인덱스 필수, `theme` 필드 추가)
     - `Message`
 3. **API 구현**:
-    - `POST /api/papers`: 제목, **테마** -> slug 생성 -> 저장 -> 반환
+    - `POST /api/papers`: 제목(선택), **테마** -> slug 생성 -> 저장 -> 반환
     - `GET /api/papers/:slug`: 조회 (만료되었으면 404)
     - `GET /api/papers/:slug/messages`: 메시지 목록 조회
     - `POST /api/messages`: 메시지 저장 (paperId 검증)
