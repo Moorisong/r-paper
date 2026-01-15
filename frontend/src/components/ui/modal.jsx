@@ -46,30 +46,40 @@ export const Modal = ({
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
                             transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 30 }}
                             className={cn(
-                                "relative w-full max-w-lg bg-white rounded-3xl shadow-2xl pointer-events-auto overflow-hidden",
+                                "relative w-full max-w-lg bg-white rounded-3xl shadow-2xl pointer-events-auto overflow-hidden min-h-[300px] flex flex-col justify-center",
                                 className
                             )}
                         >
-                            {/* Header */}
-                            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white/50 backdrop-blur-sm">
-                                <h3 className="text-lg font-bold text-gray-900">
-                                    {title}
-                                </h3>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={onClose}
-                                    className="w-8 h-8 p-0 rounded-full hover:bg-gray-100"
-                                >
-                                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </Button>
-                            </div>
+                            <div className="flex flex-col items-center w-full">
+                                <div className="w-[90%]">
+                                    {/* Header */}
+                                    <div
+                                        className="flex items-center justify-between bg-white/50 backdrop-blur-sm"
+                                        style={{ padding: '10px 0' }}
+                                    >
+                                        <h3 className="text-lg font-bold text-gray-900">
+                                            {title}
+                                        </h3>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={onClose}
+                                            className="w-8 h-8 p-0 rounded-full hover:bg-gray-100"
+                                        >
+                                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </Button>
+                                    </div>
 
-                            {/* Body */}
-                            <div className="p-6 overflow-y-auto max-h-[80vh]">
-                                {children}
+                                    {/* Body */}
+                                    <div
+                                        className="overflow-y-auto max-h-[80vh]"
+                                        style={{ paddingBottom: '30px' }}
+                                    >
+                                        {children}
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     </div>

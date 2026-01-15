@@ -37,7 +37,8 @@ export const MessageForm = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       onSubmit={handleSubmit}
-      className="w-full space-y-6"
+      className="w-full flex flex-col"
+      style={{ gap: '20px' }}
     >
       <div className="relative">
         <textarea

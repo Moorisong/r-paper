@@ -134,10 +134,16 @@ const PaperView = () => {
             </div>
 
             {/* Spacer (Before Messages) */}
-            <div className={paper.title ? "h-10" : "h-20"}></div>
+            <div className={cn(
+              "transition-all duration-500",
+              messages.length > 0 ? "h-10" : "h-0"
+            )}></div>
 
             {/* Message List */}
-            <div className="flex-1 flex flex-col items-center w-full">
+            <div className={cn(
+              "flex-1 flex flex-col items-center w-full transition-all duration-500",
+              messages.length === 0 ? "justify-center pb-20" : "justify-start"
+            )}>
               <div
                 className="flex items-center justify-center gap-2 px-1 pb-1"
                 style={{ marginBottom: messages.length > 0 ? '12px' : '0px' }}
@@ -196,7 +202,8 @@ const PaperView = () => {
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            title="따뜻한 마음 남기기"
+            title="마음 남기기"
+            className="max-w-[360px]"
           >
             <MessageForm
               onSubmit={handleMessageSubmit}
