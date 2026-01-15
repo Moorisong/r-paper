@@ -43,16 +43,22 @@ const PaperView = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center"
+          className="glass-card rounded-3xl p-8 text-center max-w-md mx-auto"
         >
-          <p className="text-xl text-gray-600 mb-4">
-            {paperError || '롤링페이퍼를 찾을 수 없습니다.'}
+          <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center mx-auto mb-4">
+            <span className="text-3xl">😢</span>
+          </div>
+          <p className="text-xl font-bold text-gray-800 mb-2">
+            페이지를 찾을 수 없어요
+          </p>
+          <p className="text-gray-500 mb-6">
+            {paperError || '롤링페이퍼가 삭제되었거나 존재하지 않습니다'}
           </p>
           <Button
             onClick={() => window.location.href = '/'}
             variant="primary"
           >
-            {MESSAGES.goHome}
+            홈으로 돌아가기
           </Button>
         </motion.div>
       </PageContainer>
@@ -60,28 +66,27 @@ const PaperView = () => {
   }
 
   return (
-    <PageContainer backgroundClass={theme.background}>
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
+    <PageContainer>
+      <div className="max-w-3xl mx-auto">
+        {/* Header Card */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8"
+          className="glass-card rounded-3xl p-6 sm:p-8 mb-8 text-center"
         >
+          {/* Icon */}
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/20 mb-4">
+            <span className="text-2xl">📜</span>
+          </div>
+
           {paper.title && (
-            <h1 className={cn(
-              'text-3xl md:text-4xl font-bold mb-3',
-              theme.text
-            )}>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">
               {paper.title}
             </h1>
           )}
 
-          <p className={cn(
-            'text-sm mb-4',
-            theme.subtext
-          )}>
+          <p className="text-gray-500 mb-5">
             {formatDday(paper.expiresAt)}
           </p>
 
@@ -89,8 +94,7 @@ const PaperView = () => {
           <div className="relative inline-block">
             <Button
               onClick={handleShare}
-              variant="themed"
-              themedClass={theme.button}
+              variant="secondary"
               size="sm"
             >
               <span className="flex items-center gap-2">
@@ -107,38 +111,45 @@ const PaperView = () => {
                     d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                   />
                 </svg>
-                공유하기
+                링크 복사
               </span>
             </Button>
 
             <AnimatePresence>
               {copySuccess && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-xl whitespace-nowrap font-medium"
                 >
-                  {MESSAGES.copySuccess}
+                  ✓ {MESSAGES.copySuccess}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </motion.header>
 
-        {/* Messages */}
+        {/* Messages Section */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-8"
         >
+          <div className="flex items-center gap-3 mb-5 px-1">
+            <h2 className="text-lg font-bold text-gray-800">
+              메시지
+            </h2>
+            {messages.length > 0 && (
+              <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-sm font-bold rounded-full">
+                {messages.length}
+              </span>
+            )}
+          </div>
           <MessageList
             messages={messages}
             isLoading={isMessagesLoading}
-            cardClass={theme.card}
-            textClass={theme.text}
-            accentClass={theme.subtext}
           />
         </motion.section>
 
@@ -147,24 +158,32 @@ const PaperView = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className={cn(
-            'p-5 rounded-3xl border shadow-lg',
-            theme.card
-          )}
+          className="glass-card rounded-3xl p-6 sm:p-8"
         >
-          <h2 className={cn(
-            'text-lg font-semibold mb-4',
-            theme.text
-          )}>
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
             메시지 남기기
           </h2>
           <MessageForm
             onSubmit={sendMessage}
             isLoading={isSending}
-            buttonClass={theme.button}
-            inputClass={theme.input}
           />
         </motion.section>
+
+        {/* Footer */}
+        <motion.footer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="text-center mt-8 pb-8"
+        >
+          <Button
+            onClick={() => window.location.href = '/'}
+            variant="secondary"
+            size="sm"
+          >
+            새 롤링페이퍼 만들기
+          </Button>
+        </motion.footer>
       </div>
     </PageContainer>
   );

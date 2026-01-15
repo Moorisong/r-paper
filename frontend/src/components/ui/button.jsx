@@ -2,15 +2,15 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const variants = {
-  primary: 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white shadow-lg shadow-pink-500/25',
-  secondary: 'bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 border border-gray-200',
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
   themed: '',
 };
 
 const sizes = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-6 py-3 text-base',
-  lg: 'px-8 py-4 text-lg',
+  sm: 'px-4 py-2.5 text-sm rounded-xl',
+  md: 'px-6 py-3 text-base rounded-xl',
+  lg: 'px-8 py-4 text-lg rounded-2xl',
 };
 
 export const Button = ({
@@ -24,7 +24,7 @@ export const Button = ({
   onClick,
   ...props
 }) => {
-  const baseStyles = 'font-medium rounded-2xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'font-bold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center';
 
   return (
     <motion.button

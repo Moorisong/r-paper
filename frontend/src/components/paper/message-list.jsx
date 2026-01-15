@@ -13,7 +13,7 @@ export const MessageList = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
+      <div className="flex items-center justify-center py-16">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -24,33 +24,34 @@ export const MessageList = ({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex flex-col items-center justify-center py-12"
+        className="flex flex-col items-center justify-center py-16 px-4"
       >
         <motion.div
-          animate={{
-            y: [0, -10, 0],
-          }}
+          animate={{ y: [0, -8, 0] }}
           transition={{
-            duration: 2,
+            duration: 2.5,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="text-6xl mb-4"
+          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-4"
         >
-          {/* Empty state emoji */}
+          <span className="text-3xl">💭</span>
         </motion.div>
         <p className={cn(
-          'text-center text-lg',
-          accentClass || 'text-gray-500'
+          'text-center text-lg font-bold text-gray-600',
+          accentClass
         )}>
           {MESSAGES.noMessages}
+        </p>
+        <p className="text-gray-400 text-sm mt-1">
+          첫 번째 메시지를 남겨보세요
         </p>
       </motion.div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
       {messages.map((message, index) => (
         <MessageCard
           key={message._id || index}

@@ -46,16 +46,16 @@ export const MessageForm = ({
           placeholder={MESSAGES.messagePlaceholder}
           rows={4}
           className={cn(
-            'w-full px-4 py-3 rounded-2xl border-2 bg-white/80 backdrop-blur-sm resize-none transition-all duration-200 focus:outline-none focus:ring-4 placeholder:text-gray-400',
-            inputClass || 'border-gray-200 focus:border-purple-400 focus:ring-purple-400/20'
+            'input-modern w-full resize-none',
+            inputClass
           )}
           disabled={isLoading}
         />
-        <span className="absolute right-3 bottom-3 text-xs text-gray-400">
+        <span className="absolute right-4 bottom-4 text-sm text-gray-400">
           {content.length}/{LIMITS.messageMaxLength}
         </span>
       </div>
-      <div className="mt-3 flex justify-end">
+      <div className="mt-4 flex justify-end">
         <Button
           type="submit"
           variant={buttonClass ? 'themed' : 'primary'}
@@ -64,7 +64,7 @@ export const MessageForm = ({
           disabled={!content.trim()}
           size="md"
         >
-          {MESSAGES.sendButton}
+          보내기
         </Button>
       </div>
     </motion.form>

@@ -15,15 +15,16 @@ export const PageContainer = ({
       transition={{ duration: 0.3 }}
       className={cn(
         'min-h-screen w-full',
-        backgroundClass || 'bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-100',
         className
       )}
+      style={{ background: '#f9fafb' }}
     >
       <div
         className={cn(
-          'min-h-screen w-full px-4 py-8',
+          'relative min-h-screen w-full py-12 sm:py-20',
           centered && 'flex flex-col items-center justify-center'
         )}
+        style={{ paddingLeft: '20px', paddingRight: '20px' }}
       >
         {children}
       </div>

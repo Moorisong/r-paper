@@ -10,14 +10,10 @@ export const Input = forwardRef(({
   themedClass = '',
   ...props
 }, ref) => {
-  const baseStyles = 'w-full px-4 py-3 rounded-2xl border-2 bg-white/80 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 placeholder:text-gray-400';
-
-  const defaultStyles = 'border-gray-200 focus:border-purple-400 focus:ring-purple-400/20';
-
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-bold text-gray-700 mb-2">
           {label}
         </label>
       )}
@@ -25,8 +21,8 @@ export const Input = forwardRef(({
         <input
           ref={ref}
           className={cn(
-            baseStyles,
-            themedClass || defaultStyles,
+            'input-modern w-full',
+            themedClass,
             error && 'border-red-400 focus:border-red-400 focus:ring-red-400/20',
             className
           )}
@@ -34,13 +30,13 @@ export const Input = forwardRef(({
           {...props}
         />
         {maxLength && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
             {currentLength || 0}/{maxLength}
           </span>
         )}
       </div>
       {error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
+        <p className="mt-2 text-sm text-red-600 font-medium">{error}</p>
       )}
     </div>
   );
