@@ -164,7 +164,7 @@ const PaperView = () => {
               <MessageList
                 messages={messages}
                 isLoading={isMessagesLoading}
-                cardClass="shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                cardClass="shadow-sm hover:shadow-md transition-shadow"
                 gridClass="grid-cols-1 gap-4"
               />
             </div>

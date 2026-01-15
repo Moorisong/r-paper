@@ -16,8 +16,6 @@ export const MessageCard = ({
   cardClass = '',
   textClass = '',
 }) => {
-  const colorClass = cardColors[index % cardColors.length];
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', {
@@ -33,24 +31,34 @@ export const MessageCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.4,
-        delay: index * 0.06,
+        duration: 0.5,
+        delay: index * 0.1,
         ease: 'easeOut',
       }}
       className={cn(
-        'message-card p-6 rounded-2xl',
-        cardClass || colorClass
+        'relative bg-white border border-gray-100 px-10 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 w-full',
+        cardClass
       )}
+      style={{ paddingTop: '10px', paddingBottom: '10px' }}
     >
-      <p className={cn(
-        'text-base leading-relaxed whitespace-pre-wrap break-words',
-        textClass || 'text-gray-800'
-      )}>
+      <p
+        className={cn(
+          'text-[13px] leading-relaxed whitespace-pre-wrap break-words font-medium text-gray-700',
+          textClass
+        )}
+        style={{ paddingLeft: '10px' }}
+      >
         {message.content}
       </p>
-      <p className="mt-4 text-xs text-gray-400 text-right">
-        {formatDate(message.createdAt)}
-      </p>
+
+      <div
+        className="mt-6 pt-4 flex justify-end"
+        style={{ paddingRight: '10px' }}
+      >
+        <span className="text-xs font-medium text-gray-400">
+          {formatDate(message.createdAt)}
+        </span>
+      </div>
     </motion.div>
   );
 };
