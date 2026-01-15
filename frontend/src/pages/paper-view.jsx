@@ -92,7 +92,10 @@ const PaperView = () => {
               </div>
 
               {paper.title && (
-                <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mt-8 mb-6">
+                <h1
+                  className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-6"
+                  style={{ marginTop: '10px' }}
+                >
                   {paper.title}
                 </h1>
               )}
