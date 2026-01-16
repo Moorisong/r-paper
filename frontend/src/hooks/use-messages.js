@@ -33,12 +33,17 @@ export const useMessages = (slug) => {
 
     try {
       const response = await messageApi.create(slug, content);
-      setMessages((prev) => [...prev, response.data.data.message]);
+      // 최신 메시지가 맨 위로 오도록 배열 앞에 추가
+      setMessages((prev) => [response.data.data.message, ...prev]);
       return response.data.data.message;
     } catch (err) {
-      const errorMessage = err.response?.data?.message || '메시지 전송에 실패했습니다.';
+      // 백엔드 에러 구조: { error: { code, message } }
+      const errorMessage = err.response?.data?.error?.message || '메시지 전송에 실패했습니다.';
       setError(errorMessage);
-      throw err;
+      // 에러 메시지를 포함한 에러 객체로 다시 throw
+      const errorWithMessage = new Error(errorMessage);
+      errorWithMessage.originalError = err;
+      throw errorWithMessage;
     } finally {
       setIsSending(false);
     }

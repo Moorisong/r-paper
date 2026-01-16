@@ -134,7 +134,7 @@ router.get('/:slug/messages', async (req, res) => {
     }
 
     const messages = await Message.find({ paperId: rollingPaper._id })
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .select('content createdAt');
 
     return res.status(200).json({
