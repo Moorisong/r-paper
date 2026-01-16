@@ -217,15 +217,21 @@ const PaperView = () => {
 
               {/* 더 보기 버튼 */}
               {hasMore && (
-                <Button
-                  onClick={loadMore}
-                  variant="ghost"
-                  size="sm"
-                  disabled={isLoadingMore}
-                  className="mt-4 text-gray-500 hover:text-purple-600 hover:bg-purple-50 font-medium"
-                >
-                  {isLoadingMore ? '불러오는 중...' : `더 보기 (${messages.length}/${totalCount})`}
-                </Button>
+                <div style={{ marginTop: '24px', marginBottom: '8px' }}>
+                  <button
+                    onClick={loadMore}
+                    disabled={isLoadingMore}
+                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200 disabled:opacity-50"
+                  >
+                    {isLoadingMore ? (
+                      '불러오는 중...'
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        더 보기 <span className="text-xs">▼</span>
+                      </span>
+                    )}
+                  </button>
+                </div>
               )}
             </div>
 

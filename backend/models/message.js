@@ -7,8 +7,7 @@ const messageSchema = new mongoose.Schema({
   paperId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'RollingPaper',
-    required: true,
-    index: true
+    required: true
   },
   content: {
     type: String,
@@ -21,6 +20,10 @@ const messageSchema = new mongoose.Schema({
   }
 });
 
+// 페이징 쿼리 성능을 위한 복합 인덱스
+messageSchema.index({ paperId: 1, createdAt: -1 });
+
 const Message = mongoose.model('Message', messageSchema);
 
 module.exports = Message;
+
