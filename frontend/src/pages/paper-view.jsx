@@ -253,7 +253,7 @@ const PaperView = () => {
                   size="sm"
                   className="text-xs text-gray-400 hover:text-gray-600 hover:bg-transparent font-normal"
                 >
-                  + 나도 롤링페이퍼 만들기
+                  {isCreator ? '+ 새로운 롤링페이퍼 만들기' : '+ 나도 롤링페이퍼 만들기'}
                 </Button>
               </Link>
             </div>
