@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { KakaoAdFit } from '@/components/ad/kakao-adfit';
 
 export const PageContainer = ({
   children,
   className = '',
   backgroundClass = '',
   centered = false,
+  showAd = true,
 }) => {
   return (
     <motion.div
@@ -25,10 +27,35 @@ export const PageContainer = ({
           centered && 'flex flex-col items-center justify-center',
           className
         )}
-        style={{ paddingLeft: '20px', paddingRight: '20px' }}
+        style={{
+          paddingLeft: '20px',
+          paddingRight: '20px',
+          paddingBottom: showAd ? '70px' : undefined
+        }}
       >
         {children}
       </div>
+
+      {/* 하단 고정 광고 배너 */}
+      {showAd && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 50,
+            padding: '8px 0',
+            background: 'rgba(249, 250, 251, 0.95)',
+          }}
+        >
+          <KakaoAdFit
+            unit="DAN-CO9B3C1kNlSWapzN"
+            width={320}
+            height={50}
+          />
+        </div>
+      )}
     </motion.div>
   );
 };
