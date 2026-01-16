@@ -246,14 +246,14 @@ const PaperView = () => {
             <div className="h-5"></div>
 
             {/* Footer Text */}
-            <div className="py-2 border-t border-gray-100 text-center mt-5">
-              <Link to="/">
+            <div className="pt-8 pb-10 border-t border-gray-100 text-center mt-10">
+              <Link to="/" className="block w-full">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-gray-400 hover:text-gray-600 hover:bg-transparent font-normal"
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-2 border-dashed border-gray-200 text-gray-500 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50 font-bold text-base h-14 rounded-2xl transition-all duration-300"
                 >
-                  {isCreator ? '+ 새로운 롤링페이퍼 만들기' : '+ 나도 롤링페이퍼 만들기'}
+                  {isCreator ? '+ 새로운 롤링페이퍼 만들기' : '✨ 나도 롤링페이퍼 만들기'}
                 </Button>
               </Link>
             </div>
