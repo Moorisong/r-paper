@@ -52,6 +52,14 @@ const ERROR_CODES = {
   DUPLICATE_CONTENT: {
     code: 'DUPLICATE_CONTENT',
     message: '동일한 내용의 메시지는 작성할 수 없습니다'
+  },
+  PAPER_RATE_LIMIT_1MIN: {
+    code: 'PAPER_RATE_LIMIT_1MIN',
+    message: '1분에 3개까지만 롤링페이퍼를 만들 수 있습니다. 잠시 후 다시 시도해주세요'
+  },
+  PAPER_RATE_LIMIT_5MIN: {
+    code: 'PAPER_RATE_LIMIT_5MIN',
+    message: '5분에 6개까지만 롤링페이퍼를 만들 수 있습니다. 잠시 후 다시 시도해주세요'
   }
 };
 

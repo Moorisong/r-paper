@@ -8,6 +8,21 @@ const Message = require('../models/message');
 const { generateSlug } = require('../utils/slug-generator');
 const { ERROR_CODES, CONFIG, THEMES } = require('../constants');
 
+// 인메모리 레이트 리밋 저장소
+const rateLimitStore = new Map();
+
+// 레이트 리밋 정리 (10분마다 오래된 데이터 삭제)
+setInterval(() => {
+  const now = Date.now();
+  const fiveMinutesAgo = now - 5 * 60 * 1000;
+  for (const [ip, data] of rateLimitStore.entries()) {
+    data.timestamps = data.timestamps.filter(ts => ts > fiveMinutesAgo);
+    if (data.timestamps.length === 0) {
+      rateLimitStore.delete(ip);
+    }
+  }
+}, 10 * 60 * 1000);
+
 const generateCreatorToken = () => {
   return crypto.randomUUID();
 };
@@ -22,6 +37,41 @@ const sendError = (res, statusCode, errorCode) => {
 const getRandomTheme = () => {
   const randomIndex = Math.floor(Math.random() * THEMES.length);
   return THEMES[randomIndex];
+};
+
+// 롤링페이퍼 생성 레이트 리밋 체크
+const checkPaperRateLimit = (ip) => {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60 * 1000;
+  const fiveMinutesAgo = now - 5 * 60 * 1000;
+
+  if (!rateLimitStore.has(ip)) {
+    rateLimitStore.set(ip, { timestamps: [] });
+  }
+
+  const data = rateLimitStore.get(ip);
+
+  // 오래된 타임스탬프 정리
+  data.timestamps = data.timestamps.filter(ts => ts > fiveMinutesAgo);
+
+  // 1분 내 요청 수 체크 (3개 이상이면 차단)
+  const recentOneMin = data.timestamps.filter(ts => ts > oneMinuteAgo);
+  if (recentOneMin.length >= 3) {
+    return { allowed: false, error: ERROR_CODES.PAPER_RATE_LIMIT_1MIN };
+  }
+
+  // 5분 내 요청 수 체크 (6개 이상이면 차단)
+  if (data.timestamps.length >= 6) {
+    return { allowed: false, error: ERROR_CODES.PAPER_RATE_LIMIT_5MIN };
+  }
+
+  return { allowed: true };
+};
+
+// 레이트 리밋 기록 추가
+const recordPaperRequest = (ip) => {
+  const data = rateLimitStore.get(ip);
+  data.timestamps.push(Date.now());
 };
 
 const createUniqueSlug = async () => {
@@ -45,6 +95,13 @@ const createUniqueSlug = async () => {
 router.post('/', async (req, res) => {
   try {
     const { title } = req.body;
+    const clientIp = req.ip;
+
+    // 레이트 리밋 체크
+    const rateLimitResult = checkPaperRateLimit(clientIp);
+    if (!rateLimitResult.allowed) {
+      return sendError(res, 429, rateLimitResult.error);
+    }
 
     if (title && title.length > CONFIG.MAX_TITLE_LENGTH) {
       return sendError(res, 400, ERROR_CODES.TITLE_TOO_LONG);
@@ -65,6 +122,9 @@ router.post('/', async (req, res) => {
     });
 
     await rollingPaper.save();
+
+    // 성공 시 레이트 리밋 기록
+    recordPaperRequest(clientIp);
 
     // creatorToken 발급 (클라이언트에서 저장, DB에는 저장하지 않음)
     const creatorToken = generateCreatorToken();
