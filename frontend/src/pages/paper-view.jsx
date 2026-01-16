@@ -18,7 +18,7 @@ const PaperView = () => {
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const { paper, isLoading: isPaperLoading, error: paperError } = usePaper(slug);
-  const { messages, isLoading: isMessagesLoading, isSending, sendMessage } = useMessages(slug);
+  const { messages, isLoading: isMessagesLoading, isLoadingMore, isSending, sendMessage, hasMore, totalCount, loadMore } = useMessages(slug);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 생성자 여부 확인 (creatorToken 존재 시 생성자)
@@ -204,7 +204,7 @@ const PaperView = () => {
                   도착한 메시지
                 </h2>
                 <span className="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
-                  {messages.length}
+                  {totalCount}
                 </span>
               </div>
 
@@ -214,6 +214,19 @@ const PaperView = () => {
                 cardClass="shadow-sm hover:shadow transition-shadow"
                 gridClass="grid-cols-1 gap-4"
               />
+
+              {/* 더 보기 버튼 */}
+              {hasMore && (
+                <Button
+                  onClick={loadMore}
+                  variant="ghost"
+                  size="sm"
+                  disabled={isLoadingMore}
+                  className="mt-4 text-gray-500 hover:text-purple-600 hover:bg-purple-50 font-medium"
+                >
+                  {isLoadingMore ? '불러오는 중...' : `더 보기 (${messages.length}/${totalCount})`}
+                </Button>
+              )}
             </div>
 
             {/* Spacer (Before Button) */}

@@ -121,6 +121,9 @@ router.get('/:slug', async (req, res) => {
 router.get('/:slug/messages', async (req, res) => {
   try {
     const { slug } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 30;
+    const skip = (page - 1) * limit;
 
     const rollingPaper = await RollingPaper.findOne({ slug });
 
@@ -133,13 +136,29 @@ router.get('/:slug/messages', async (req, res) => {
       return sendError(res, 404, ERROR_CODES.PAPER_EXPIRED);
     }
 
+    // 총 메시지 수 조회
+    const totalCount = await Message.countDocuments({ paperId: rollingPaper._id });
+
+    // 페이징된 메시지 조회
     const messages = await Message.find({ paperId: rollingPaper._id })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .select('content createdAt');
+
+    const hasMore = skip + messages.length < totalCount;
 
     return res.status(200).json({
       success: true,
-      data: messages
+      data: {
+        messages,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          hasMore
+        }
+      }
     });
   } catch (error) {
     console.error('Error fetching messages:', error);
