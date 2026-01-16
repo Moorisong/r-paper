@@ -40,6 +40,18 @@ const ERROR_CODES = {
   CREATOR_NOT_ALLOWED: {
     code: 'CREATOR_NOT_ALLOWED',
     message: '롤링페이퍼 생성자는 메시지를 작성할 수 없습니다'
+  },
+  MESSAGE_RATE_LIMIT_1MIN: {
+    code: 'MESSAGE_RATE_LIMIT_1MIN',
+    message: '1분에 3개까지만 메시지를 작성할 수 있습니다. 잠시 후 다시 시도해주세요'
+  },
+  MESSAGE_RATE_LIMIT_5MIN: {
+    code: 'MESSAGE_RATE_LIMIT_5MIN',
+    message: '5분에 5개까지만 메시지를 작성할 수 있습니다. 잠시 후 다시 시도해주세요'
+  },
+  DUPLICATE_CONTENT: {
+    code: 'DUPLICATE_CONTENT',
+    message: '동일한 내용의 메시지는 작성할 수 없습니다'
   }
 };
 
