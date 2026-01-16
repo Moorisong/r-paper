@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const RollingPaper = require('../models/rolling-paper');
 const Message = require('../models/message');
+const { containsProfanity } = require('../utils/profanity-filter');
 const { ERROR_CODES, CONFIG } = require('../constants');
 
 // 인메모리 레이트 리밋 저장소
@@ -103,6 +104,11 @@ router.post('/', async (req, res) => {
     }
 
     const trimmedContent = content.trim();
+
+    // 비속어 필터링 체크
+    if (containsProfanity(trimmedContent)) {
+      return sendError(res, 400, ERROR_CODES.PROFANITY_DETECTED);
+    }
 
     // 레이트 리밋 체크
     const rateLimitResult = checkMessageRateLimit(clientIp);
