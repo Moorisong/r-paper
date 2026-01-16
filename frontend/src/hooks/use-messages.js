@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { paperApi, messageApi } from '@/services/api';
 
-const MESSAGES_PER_PAGE = 30;
+const MESSAGES_PER_PAGE = 10;
 
 export const useMessages = (slug) => {
   const [messages, setMessages] = useState([]);
