@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { LIMITS, MESSAGES } from '@/constants';
@@ -11,16 +11,20 @@ export const MessageForm = ({
   inputClass = '',
 }) => {
   const [content, setContent] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim() || isLoading) return;
 
+    setErrorMessage('');
+
     try {
       await onSubmit(content);
       setContent('');
-    } catch {
-      // Error handled in hook
+    } catch (err) {
+      // 에러 메시지 표시
+      setErrorMessage(err.message || '메시지 전송에 실패했습니다.');
     }
   };
 
@@ -28,6 +32,8 @@ export const MessageForm = ({
     const value = e.target.value;
     // 붙여넣기 시에도 500자까지만 잘라서 입력
     setContent(value.slice(0, LIMITS.messageMaxLength));
+    // 입력 시 에러 메시지 초기화
+    if (errorMessage) setErrorMessage('');
   };
 
   return (
@@ -47,7 +53,8 @@ export const MessageForm = ({
           rows={5}
           className={cn(
             'input-modern w-full resize-none pr-16',
-            inputClass
+            inputClass,
+            errorMessage && 'border-red-300 focus:border-red-400 focus:ring-red-100'
           )}
           disabled={isLoading}
         />
@@ -55,6 +62,21 @@ export const MessageForm = ({
           {content.length}/{LIMITS.messageMaxLength}
         </span>
       </div>
+
+      {/* 에러 메시지 표시 */}
+      <AnimatePresence>
+        {errorMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 font-medium"
+          >
+            ⚠️ {errorMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Button
         type="submit"
@@ -70,3 +92,4 @@ export const MessageForm = ({
     </motion.form>
   );
 };
+
