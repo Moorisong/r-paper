@@ -21,6 +21,11 @@ const rollingPaperSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  creatorIp: {
+    type: String,
+    default: null,
+    index: true // IP별 생성 패턴 분석용
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -32,7 +37,7 @@ const rollingPaperSchema = new mongoose.Schema({
   }
 });
 
-rollingPaperSchema.pre('save', function() {
+rollingPaperSchema.pre('save', function () {
   if (!this.expiresAt) {
     const expirationDate = new Date(this.createdAt);
     expirationDate.setDate(expirationDate.getDate() + CONFIG.TTL_DAYS);

@@ -64,6 +64,18 @@ const ERROR_CODES = {
   PROFANITY_DETECTED: {
     code: 'PROFANITY_DETECTED',
     message: '부적절한 표현이 포함되어 있습니다'
+  },
+  IP_BLACKLISTED: {
+    code: 'IP_BLACKLISTED',
+    message: '비정상적인 활동이 감지되어 일시적으로 이용이 제한됩니다'
+  },
+  DAILY_LIMIT_EXCEEDED: {
+    code: 'DAILY_LIMIT_EXCEEDED',
+    message: '오늘 생성할 수 있는 롤링페이퍼 수를 초과했습니다. 내일 다시 시도해주세요'
+  },
+  ADMIN_UNAUTHORIZED: {
+    code: 'ADMIN_UNAUTHORIZED',
+    message: '관리자 인증이 필요합니다'
   }
 };
 

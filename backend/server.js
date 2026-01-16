@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const connectDatabase = require('./config/database');
 const papersRouter = require('./routes/papers');
 const messagesRouter = require('./routes/messages');
+const adminRouter = require('./routes/admin');
 const { API_ROUTES, ERROR_CODES } = require('./constants');
 
 const app = express();
@@ -46,6 +47,7 @@ app.get(`${API_ROUTES.BASE}${API_ROUTES.HEALTH}`, (req, res) => {
 // API routes
 app.use(`${API_ROUTES.BASE}${API_ROUTES.PAPERS}`, papersRouter);
 app.use(`${API_ROUTES.BASE}${API_ROUTES.MESSAGES}`, messagesRouter);
+app.use(`${API_ROUTES.BASE}/admin`, adminRouter);
 
 // 404 handler
 app.use((req, res) => {
