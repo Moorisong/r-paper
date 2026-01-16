@@ -5,11 +5,13 @@ const crypto = require('crypto');
 const router = express.Router();
 const RollingPaper = require('../models/rolling-paper');
 const Message = require('../models/message');
+const IpActivity = require('../models/ip-activity');
+const IpBlacklist = require('../models/ip-blacklist');
 const { generateSlug } = require('../utils/slug-generator');
 const { containsProfanity } = require('../utils/profanity-filter');
 const { ERROR_CODES, CONFIG, THEMES } = require('../constants');
 
-// 인메모리 레이트 리밋 저장소
+// 인메모리 레이트 리밋 저장소 (단기 제한용)
 const rateLimitStore = new Map();
 
 // 레이트 리밋 정리 (10분마다 오래된 데이터 삭제)
@@ -40,7 +42,98 @@ const getRandomTheme = () => {
   return THEMES[randomIndex];
 };
 
-// 롤링페이퍼 생성 레이트 리밋 체크
+// 오늘 날짜를 YYYY-MM-DD 형식으로 반환
+const getTodayDateString = () => {
+  return new Date().toISOString().split('T')[0];
+};
+
+// IP 블랙리스트 체크
+const checkBlacklist = async (ip) => {
+  const blacklistEntry = await IpBlacklist.findOne({ ip });
+  return !!blacklistEntry;
+};
+
+// 일일 제한 체크
+const checkDailyLimit = async (ip) => {
+  const today = getTodayDateString();
+  const activity = await IpActivity.findOne({ ip, date: today });
+
+  if (!activity) {
+    return { allowed: true, count: 0 };
+  }
+
+  if (activity.paperCount >= CONFIG.DAILY_PAPER_LIMIT) {
+    return { allowed: false, count: activity.paperCount };
+  }
+
+  return { allowed: true, count: activity.paperCount };
+};
+
+// 레이트 리밋 위반 기록 및 자동 블랙리스트 체크
+const recordViolation = async (ip) => {
+  const today = getTodayDateString();
+  const now = new Date();
+
+  // 오늘 활동 기록 업데이트
+  const activity = await IpActivity.findOneAndUpdate(
+    { ip, date: today },
+    {
+      $inc: { rateLimitViolations: 1 },
+      $set: { lastViolationAt: now }
+    },
+    { upsert: true, new: true }
+  );
+
+  // 자동 블랙리스트 조건 체크
+  const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  // 최근 5분 내 위반 횟수 계산 (현재 시간 기준으로 최근 위반 추적)
+  // 단순화를 위해 오늘 총 위반 횟수로 판단
+  const recentViolations = activity.rateLimitViolations;
+
+  // 24시간 내 총 위반 횟수 (여러 날에 걸친 경우)
+  const recentActivities = await IpActivity.find({
+    ip,
+    createdAt: { $gte: twentyFourHoursAgo }
+  });
+  const totalViolations24h = recentActivities.reduce((sum, a) => sum + a.rateLimitViolations, 0);
+
+  // 자동 차단 조건
+  let banDuration = 0;
+  let banReason = null;
+
+  if (totalViolations24h >= CONFIG.AUTO_BAN_VIOLATIONS_24H) {
+    // 24시간 내 5회 이상 위반 → 7일 차단
+    banDuration = CONFIG.AUTO_BAN_DURATION_LONG;
+    banReason = 'AUTO_RATE_LIMIT';
+  } else if (recentViolations >= CONFIG.AUTO_BAN_VIOLATIONS_5MIN) {
+    // 오늘 3회 이상 위반 → 24시간 차단
+    banDuration = CONFIG.AUTO_BAN_DURATION_SHORT;
+    banReason = 'AUTO_RATE_LIMIT';
+  }
+
+  if (banDuration > 0) {
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + banDuration);
+
+    await IpBlacklist.findOneAndUpdate(
+      { ip },
+      {
+        ip,
+        reason: banReason,
+        description: `자동 차단: ${totalViolations24h}회 레이트 리밋 위반`,
+        violationCount: totalViolations24h,
+        expiresAt
+      },
+      { upsert: true }
+    );
+
+    console.log(`[AUTO-BAN] IP ${ip} 차단됨 - ${banDuration}시간, 사유: ${totalViolations24h}회 위반`);
+  }
+};
+
+// 롤링페이퍼 생성 레이트 리밋 체크 (단기)
 const checkPaperRateLimit = (ip) => {
   const now = Date.now();
   const oneMinuteAgo = now - 60 * 1000;
@@ -75,6 +168,19 @@ const recordPaperRequest = (ip) => {
   data.timestamps.push(Date.now());
 };
 
+// 일일 생성 횟수 기록
+const recordDailyPaper = async (ip) => {
+  const today = getTodayDateString();
+
+  await IpActivity.findOneAndUpdate(
+    { ip, date: today },
+    {
+      $inc: { paperCount: 1 }
+    },
+    { upsert: true }
+  );
+};
+
 const createUniqueSlug = async () => {
   let attempts = 0;
 
@@ -98,9 +204,23 @@ router.post('/', async (req, res) => {
     const { title } = req.body;
     const clientIp = req.ip;
 
-    // 레이트 리밋 체크
+    // 1. 블랙리스트 체크 (최우선)
+    const isBlacklisted = await checkBlacklist(clientIp);
+    if (isBlacklisted) {
+      return sendError(res, 403, ERROR_CODES.IP_BLACKLISTED);
+    }
+
+    // 2. 일일 제한 체크
+    const dailyLimitResult = await checkDailyLimit(clientIp);
+    if (!dailyLimitResult.allowed) {
+      return sendError(res, 429, ERROR_CODES.DAILY_LIMIT_EXCEEDED);
+    }
+
+    // 3. 단기 레이트 리밋 체크
     const rateLimitResult = checkPaperRateLimit(clientIp);
     if (!rateLimitResult.allowed) {
+      // 레이트 리밋 위반 기록 및 자동 블랙리스트 체크
+      await recordViolation(clientIp);
       return sendError(res, 429, rateLimitResult.error);
     }
 
@@ -123,14 +243,18 @@ router.post('/', async (req, res) => {
       slug,
       title: title || null,
       theme,
+      creatorIp: clientIp, // IP 기록
       createdAt,
       expiresAt
     });
 
     await rollingPaper.save();
 
-    // 성공 시 레이트 리밋 기록
+    // 성공 시 레이트 리밋 기록 (메모리)
     recordPaperRequest(clientIp);
+
+    // 성공 시 일일 생성 횟수 기록 (DB)
+    await recordDailyPaper(clientIp);
 
     // creatorToken 발급 (클라이언트에서 저장, DB에는 저장하지 않음)
     const creatorToken = generateCreatorToken();
