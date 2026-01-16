@@ -113,6 +113,31 @@ const PaperView = () => {
 
   return (
     <div className="min-h-screen transition-colors duration-700 bg-slate-50">
+      {/* 플로팅 버튼 컨테이너 - 컨텐츠 영역 기준으로 위치 */}
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[448px] px-4 pointer-events-none z-50">
+        <div className="relative w-full">
+          {/* 메시지 남기기 버튼 - 생성자가 아닐 때만 표시 */}
+          {!isCreator && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="absolute bottom-[130px] right-3 pointer-events-auto w-10 h-10 bg-purple-600/20 hover:bg-purple-700/40 backdrop-blur-sm text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center text-base active:scale-95"
+              aria-label="메시지 남기기"
+            >
+              ✍️
+            </button>
+          )}
+
+          {/* 새 롤링페이퍼 만들기 버튼 */}
+          <Link
+            to="/"
+            className="absolute bottom-[80px] right-3 pointer-events-auto w-10 h-10 bg-purple-600/20 hover:bg-purple-700/40 backdrop-blur-sm text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center text-base active:scale-95"
+            aria-label="새 롤링페이퍼 만들기"
+          >
+            ➕
+          </Link>
+        </div>
+      </div>
+
       {/* 상단 경고 배너 */}
       <LinkWarningBanner
         isVisible={showLinkWarningBanner}
