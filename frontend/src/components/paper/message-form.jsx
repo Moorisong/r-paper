@@ -26,9 +26,8 @@ export const MessageForm = ({
 
   const handleChange = (e) => {
     const value = e.target.value;
-    if (value.length <= LIMITS.messageMaxLength) {
-      setContent(value);
-    }
+    // 붙여넣기 시에도 500자까지만 잘라서 입력
+    setContent(value.slice(0, LIMITS.messageMaxLength));
   };
 
   return (
