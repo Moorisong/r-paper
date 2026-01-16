@@ -226,7 +226,7 @@ const PaperView = () => {
                   onClick={() => setIsModalOpen(true)}
                   variant="primary"
                   size="md"
-                  className="w-[80%] max-w-xs mx-auto font-bold text-sm shadow-sm hover:shadow h-12"
+                  className="w-[80%] max-w-xs mx-auto font-bold text-sm shadow-sm h-12"
                 >
                   ✍️ 메시지 남기기
                 </Button>
