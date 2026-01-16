@@ -28,11 +28,14 @@ export const MessageList = ({
         className="flex flex-col items-center justify-center py-8 px-4"
         style={{ marginTop: '5px' }}
       >
-        <p className={cn(
-          'text-center text-sm font-medium text-gray-500',
-          accentClass
-        )}>
-          {MESSAGES.noMessages}
+        <p
+          className={cn(
+            'text-center text-sm font-medium text-gray-500',
+            accentClass
+          )}
+        >
+          아직 메시지가 없어요.<br />
+          첫 번째 메시지를 남겨보세요!
         </p>
       </motion.div>
     );
