@@ -14,7 +14,13 @@ export const useCreatePaper = () => {
 
     try {
       const response = await paperApi.create(title || undefined);
-      const { slug } = response.data.data;
+      const { slug, creatorToken } = response.data.data;
+
+      // creatorToken을 LocalStorage에 저장 (slug별로 저장)
+      if (creatorToken) {
+        localStorage.setItem(`creator_token_${slug}`, creatorToken);
+      }
+
       navigate(`${ROUTES.paperView(slug)}?new=true`);
       return response.data.data;
     } catch (err) {

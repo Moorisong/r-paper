@@ -21,9 +21,20 @@ const PaperView = () => {
   const { messages, isLoading: isMessagesLoading, isSending, sendMessage } = useMessages(slug);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // 생성자 여부 확인 (creatorToken 존재 시 생성자)
+  const [isCreator, setIsCreator] = useState(false);
+
   // 링크 복사 UX 상태
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [showLinkWarningBanner, setShowLinkWarningBanner] = useState(false);
+
+  // creatorToken 확인
+  useEffect(() => {
+    if (slug) {
+      const creatorToken = localStorage.getItem(`creator_token_${slug}`);
+      setIsCreator(!!creatorToken);
+    }
+  }, [slug]);
 
   // 새로 생성된 롤링페이퍼인지 확인 (URL 쿼리 파라미터)
   useEffect(() => {
@@ -208,17 +219,28 @@ const PaperView = () => {
             {/* Spacer (Before Button) */}
             <div style={{ height: messages.length > 0 ? '20px' : '4px' }}></div>
 
-            {/* Write Message Button */}
-            <div className="text-center">
-              <Button
-                onClick={() => setIsModalOpen(true)}
-                variant="primary"
-                size="md"
-                className="w-[80%] max-w-xs mx-auto font-bold text-sm shadow-sm hover:shadow h-12"
-              >
-                ✍️ 메시지 남기기
-              </Button>
-            </div>
+            {/* Write Message Button - 생성자는 메시지 작성 불가 */}
+            {!isCreator ? (
+              <div className="text-center">
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  variant="primary"
+                  size="md"
+                  className="w-[80%] max-w-xs mx-auto font-bold text-sm shadow-sm hover:shadow h-12"
+                >
+                  ✍️ 메시지 남기기
+                </Button>
+              </div>
+            ) : (
+              <div className="text-center py-4 px-6 bg-gray-50 rounded-2xl">
+                <p className="text-sm text-gray-500">
+                  💌 롤링페이퍼 주인은 메시지를 작성할 수 없어요
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  링크를 공유해서 메시지를 받아보세요!
+                </p>
+              </div>
+            )}
 
             {/* Spacer 20px (Before Footer) */}
             <div className="h-5"></div>

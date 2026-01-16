@@ -36,6 +36,10 @@ const ERROR_CODES = {
   RATE_LIMIT_EXCEEDED: {
     code: 'RATE_LIMIT_EXCEEDED',
     message: '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요'
+  },
+  CREATOR_NOT_ALLOWED: {
+    code: 'CREATOR_NOT_ALLOWED',
+    message: '롤링페이퍼 생성자는 메시지를 작성할 수 없습니다'
   }
 };
 
