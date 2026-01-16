@@ -122,7 +122,7 @@ router.get('/:slug/messages', async (req, res) => {
   try {
     const { slug } = req.params;
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 30;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
     const rollingPaper = await RollingPaper.findOne({ slug });

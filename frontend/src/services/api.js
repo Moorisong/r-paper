@@ -11,7 +11,7 @@ const apiClient = axios.create({
 export const paperApi = {
   create: (title) => apiClient.post(API_ENDPOINTS.papers.create, { title }),
   get: (slug) => apiClient.get(API_ENDPOINTS.papers.get(slug)),
-  getMessages: (slug, page = 1, limit = 30) =>
+  getMessages: (slug, page = 1, limit = 10) =>
     apiClient.get(API_ENDPOINTS.papers.messages(slug), { params: { page, limit } }),
 };
 
