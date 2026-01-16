@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { PageContainer } from '@/components/layout/page-container';
 import { MessageList } from '@/components/paper/message-list';
 import { MessageForm } from '@/components/paper/message-form';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { LinkCopyModal } from '@/components/paper/link-copy-modal';
+import { LinkWarningBanner } from '@/components/paper/link-warning-banner';
 import { usePaper } from '@/hooks/use-paper';
 import { useMessages } from '@/hooks/use-messages';
 import { MESSAGES } from '@/constants';
@@ -14,24 +16,55 @@ import { formatDday, copyToClipboard, cn } from '@/lib/utils';
 
 const PaperView = () => {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const { paper, isLoading: isPaperLoading, error: paperError } = usePaper(slug);
   const { messages, isLoading: isMessagesLoading, isSending, sendMessage } = useMessages(slug);
-  const [copySuccess, setCopySuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 링크 복사 UX 상태
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [showLinkWarningBanner, setShowLinkWarningBanner] = useState(false);
+
+  // 새로 생성된 롤링페이퍼인지 확인 (URL 쿼리 파라미터)
+  useEffect(() => {
+    const isNew = searchParams.get('new') === 'true';
+    if (isNew && paper) {
+      setIsLinkModalOpen(true);
+      // URL에서 쿼리 파라미터 제거 (히스토리 정리)
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [searchParams, paper]);
 
   const handleShare = async () => {
     const url = window.location.href;
-    const success = await copyToClipboard(url);
-
-    if (success) {
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
-    }
+    await copyToClipboard(url);
   };
 
   const handleMessageSubmit = async (content) => {
     await sendMessage(content);
     setIsModalOpen(false);
+  };
+
+  // 링크 복사 모달 핸들러
+  const handleLinkCopySuccess = () => {
+    setShowLinkWarningBanner(false);
+  };
+
+  const handleLinkModalClose = () => {
+    setIsLinkModalOpen(false);
+  };
+
+  const handleDismissWithoutCopy = () => {
+    setShowLinkWarningBanner(true);
+  };
+
+  // 배너 핸들러
+  const handleBannerCopySuccess = () => {
+    setShowLinkWarningBanner(false);
+  };
+
+  const handleBannerClose = () => {
+    setShowLinkWarningBanner(false);
   };
 
   if (isPaperLoading) {
@@ -69,13 +102,32 @@ const PaperView = () => {
 
   return (
     <div className="min-h-screen transition-colors duration-700 bg-slate-50">
-      <PageContainer className="relative z-10 pt-40 pb-32 sm:pt-48 flex flex-col items-center">
+      {/* 상단 경고 배너 */}
+      <LinkWarningBanner
+        isVisible={showLinkWarningBanner}
+        onCopySuccess={handleBannerCopySuccess}
+        onClose={handleBannerClose}
+      />
+
+      <PageContainer className={cn(
+        "relative z-10 pb-32 flex flex-col items-center"
+      )}
+        style={{
+          paddingTop: showLinkWarningBanner ? '240px' : '160px' // 강제 적용 (기존 pt-40=160px, pt-60=240px)
+        }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="w-full mx-auto"
-          style={{ paddingLeft: '10px', paddingRight: '10px', maxWidth: '448px', paddingTop: '80px', paddingBottom: '80px' }}
+          style={{
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            maxWidth: '448px',
+            paddingTop: '80px',
+            paddingBottom: '80px',
+            marginTop: showLinkWarningBanner ? '40px' : '0px'
+          }}
         >
           {/* Main Card */}
           <div className="bg-white rounded-3xl px-8 py-10 sm:px-12 sm:py-12 min-h-[60vh] flex flex-col overflow-visible border border-gray-100 shadow-sm">
@@ -108,29 +160,15 @@ const PaperView = () => {
                 <span>{formatDday(paper.expiresAt)}</span>
               </div>
 
-              <div className="relative">
-                <Button
-                  onClick={handleShare}
-                  variant="ghost"
-                  size="sm"
-                  className="w-auto text-xs font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-50"
-                >
-                  🔗 링크 복사하기
-                </Button>
-
-                <AnimatePresence>
-                  {copySuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 bg-gray-900/95 text-white text-sm rounded-xl whitespace-nowrap font-bold shadow-xl z-50 backdrop-blur-sm sm:absolute sm:top-full sm:left-1/2 sm:-translate-x-1/2 sm:translate-y-0 sm:mt-2 sm:px-4 sm:py-2 sm:text-xs sm:rounded-lg"
-                    >
-                      ✨ 링크 복사 완료!
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              <Button
+                onClick={handleShare}
+                variant="ghost"
+                size="sm"
+                className="w-auto text-xs font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+                style={{ marginTop: '8px' }}
+              >
+                🔗 링크 복사하기
+              </Button>
 
               {/* Spacer 10px */}
               <div className="h-2.5"></div>
@@ -216,6 +254,14 @@ const PaperView = () => {
             />
           </Modal>
 
+          {/* 링크 복사 모달 */}
+          <LinkCopyModal
+            isOpen={isLinkModalOpen}
+            onClose={handleLinkModalClose}
+            onCopySuccess={handleLinkCopySuccess}
+            onDismissWithoutCopy={handleDismissWithoutCopy}
+          />
+
         </motion.div>
       </PageContainer>
     </div>
@@ -223,3 +269,4 @@ const PaperView = () => {
 };
 
 export default PaperView;
+

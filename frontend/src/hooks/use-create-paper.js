@@ -15,7 +15,7 @@ export const useCreatePaper = () => {
     try {
       const response = await paperApi.create(title || undefined);
       const { slug } = response.data.data;
-      navigate(ROUTES.paperView(slug));
+      navigate(`${ROUTES.paperView(slug)}?new=true`);
       return response.data.data;
     } catch (err) {
       const errorMessage = err.response?.data?.message || '롤링페이퍼 생성에 실패했습니다.';
