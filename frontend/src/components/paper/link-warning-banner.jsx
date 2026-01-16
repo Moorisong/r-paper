@@ -30,9 +30,9 @@ export const LinkWarningBanner = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -50 }}
                     transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
-                    className="fixed top-0 left-0 right-0 z-40"
+                    className="fixed top-0 left-0 right-0 z-40 flex justify-center"
                 >
-                    <div className="bg-orange-50 border-b border-orange-100 shadow-sm">
+                    <div className="bg-orange-50 border-b border-orange-100 shadow-sm w-full max-w-md">
                         <div className="max-w-lg mx-auto px-4 flex items-center justify-between gap-3" style={{ paddingTop: '4px', paddingBottom: '4px' }}>
                             {/* 메시지 */}
                             <p className="text-orange-800 text-xs font-medium flex-1 truncate" style={{ paddingLeft: '8px' }}>
