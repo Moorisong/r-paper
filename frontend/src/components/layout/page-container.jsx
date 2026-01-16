@@ -45,15 +45,24 @@ export const PageContainer = ({
             left: 0,
             right: 0,
             zIndex: 50,
-            padding: '8px 0',
-            background: 'rgba(249, 250, 251, 0.95)',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
-          <KakaoAdFit
-            unit="DAN-CO9B3C1kNlSWapzN"
-            width={320}
-            height={50}
-          />
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '448px',
+              padding: '8px 0',
+              background: 'rgba(249, 250, 251, 0.95)',
+            }}
+          >
+            <KakaoAdFit
+              unit="DAN-CO9B3C1kNlSWapzN"
+              width={320}
+              height={50}
+            />
+          </div>
         </div>
       )}
     </motion.div>
