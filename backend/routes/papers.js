@@ -1,11 +1,16 @@
 'use strict';
 
 const express = require('express');
+const crypto = require('crypto');
 const router = express.Router();
 const RollingPaper = require('../models/rolling-paper');
 const Message = require('../models/message');
 const { generateSlug } = require('../utils/slug-generator');
 const { ERROR_CODES, CONFIG, THEMES } = require('../constants');
+
+const generateCreatorToken = () => {
+  return crypto.randomUUID();
+};
 
 const sendError = (res, statusCode, errorCode) => {
   return res.status(statusCode).json({
@@ -61,13 +66,17 @@ router.post('/', async (req, res) => {
 
     await rollingPaper.save();
 
+    // creatorToken 발급 (클라이언트에서 저장, DB에는 저장하지 않음)
+    const creatorToken = generateCreatorToken();
+
     return res.status(201).json({
       success: true,
       data: {
         slug: rollingPaper.slug,
         title: rollingPaper.title,
         theme: rollingPaper.theme,
-        expiresAt: rollingPaper.expiresAt
+        expiresAt: rollingPaper.expiresAt,
+        creatorToken
       }
     });
   } catch (error) {

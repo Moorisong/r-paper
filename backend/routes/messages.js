@@ -16,7 +16,12 @@ const sendError = (res, statusCode, errorCode) => {
 // POST /api/messages - Create new message
 router.post('/', async (req, res) => {
   try {
-    const { slug, content } = req.body;
+    const { slug, content, creatorToken } = req.body;
+
+    // 생성자 메시지 작성 제한: creatorToken이 포함된 경우 거부
+    if (creatorToken) {
+      return sendError(res, 403, ERROR_CODES.CREATOR_NOT_ALLOWED);
+    }
 
     if (!slug) {
       return sendError(res, 400, ERROR_CODES.SLUG_REQUIRED);

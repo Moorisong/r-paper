@@ -11,7 +11,7 @@
 ## 6. 데이터베이스 설계 (MongoDB)
 ### RollingPaper
 - `slug` (Unique, 8 chars)
-- `theme` (String)
+- `theme` (String) - 단일 테마 사용 (theme_basic)
 - `expiresAt` (TTL Index)
 ### Message
 - `paperId` (Reference)
@@ -19,6 +19,11 @@
 ## 7. 서버 아키텍처
 - Backend: Express
 - DB: MongoDB Atlas
+
+## 14. 생성자 메시지 작성 제한
+- **생성자**는 메시지 작성 불가 (방문자만 가능)
+- 생성 시 `creatorToken` 발급 -> 클라이언트 저장
+- 메시지 작성 API 요청 시 `creatorToken` 있으면 거부 (403)
 
 ---
 
@@ -32,13 +37,13 @@
 1. **환경 설정**: Node.js/Python 등 서버 환경 및 DB(MongoDB) 연결
     - **환경변수**: 프로젝트 루트의 `.env` 파일에서 `MONGODB_URI` 로드
 2. **DB 스키마 정의**:
-    - `RollingPaper` (TTL 인덱스 필수, `theme` 필드 추가)
+    - `RollingPaper` (TTL 인덱스 필수, `theme` 필드 - 단일 테마 사용)
     - `Message`
 3. **API 구현**:
-    - `POST /api/papers`: 제목(선택), **테마** -> slug 생성 -> 저장 -> 반환
+    - `POST /api/papers`: 제목(선택) -> slug 생성 -> 저장 -> **`creatorToken` 반환 (UUID)**
     - `GET /api/papers/:slug`: 조회 (만료되었으면 404)
     - `GET /api/papers/:slug/messages`: 메시지 목록 조회
-    - `POST /api/messages`: 메시지 저장 (paperId 검증)
+    - `POST /api/messages`: 메시지 저장 (paperId 검증). **요청에 `creatorToken` 포함 시 403 Forbidden 리턴**
 4. **배포/운영 고려**:
     - CORS 설정
     - Rate Limiting (간단한 IP 기반)
@@ -48,3 +53,4 @@
 - **운영자 API 만들지 말 것** (DB 직접 접속 관리 전제)
 - TTL 인덱스가 정확히 설정되었는지 확인
 - Slug 생성 시 충돌 처리 (Retry 로직 등)
+- **테마는 단일 테마(theme_basic)만 사용** - 랜덤 테마 시스템 없음

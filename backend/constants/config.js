@@ -10,16 +10,7 @@ const CONFIG = {
 };
 
 const THEMES = [
-  'theme_candy',
-  'theme_ocean',
-  'theme_sunset',
-  'theme_forest',
-  'theme_galaxy',
-  'theme_cherry',
-  'theme_mint',
-  'theme_lavender',
-  'theme_peach',
-  'theme_sky'
+  'theme_basic'
 ];
 
 const API_ROUTES = {
