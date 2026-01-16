@@ -6,6 +6,7 @@ const router = express.Router();
 const RollingPaper = require('../models/rolling-paper');
 const Message = require('../models/message');
 const { generateSlug } = require('../utils/slug-generator');
+const { containsProfanity } = require('../utils/profanity-filter');
 const { ERROR_CODES, CONFIG, THEMES } = require('../constants');
 
 // 인메모리 레이트 리밋 저장소
@@ -105,6 +106,11 @@ router.post('/', async (req, res) => {
 
     if (title && title.length > CONFIG.MAX_TITLE_LENGTH) {
       return sendError(res, 400, ERROR_CODES.TITLE_TOO_LONG);
+    }
+
+    // 비속어 필터링 체크
+    if (title && containsProfanity(title)) {
+      return sendError(res, 400, ERROR_CODES.PROFANITY_DETECTED);
     }
 
     const slug = await createUniqueSlug();

@@ -60,6 +60,10 @@ const ERROR_CODES = {
   PAPER_RATE_LIMIT_5MIN: {
     code: 'PAPER_RATE_LIMIT_5MIN',
     message: '5분에 6개까지만 롤링페이퍼를 만들 수 있습니다. 잠시 후 다시 시도해주세요'
+  },
+  PROFANITY_DETECTED: {
+    code: 'PROFANITY_DETECTED',
+    message: '부적절한 표현이 포함되어 있습니다'
   }
 };
 
