@@ -2,7 +2,6 @@
 
 **Haroo Paper**는 로그인 없이 누구나 쉽고 빠르게 롤링페이퍼를 만들고 친구들과 공유할 수 있는 웹 서비스입니다. 소중한 마음을 담은 메시지를 주고받아보세요!
 
-![Haroo Paper Banner](https://via.placeholder.com/1200x600.png?text=Haroo+Paper+Preview)
 
 ## ✨ 주요 기능
 
