@@ -4,6 +4,15 @@ const Filter = require('badwords-ko');
 
 const filter = new Filter();
 
+// 커스텀 금지 단어 추가 (라이브러리에 포함되지 않은 단어들)
+const customBadWords = [
+    // 성인 콘텐츠 관련
+    '섹스', '쇡스', 'sex', 'cex',
+    // 변형 형태도 추가
+    '섹쓰', '쎅스', '쎅쓰', 'sexx', 's3x'
+];
+filter.addWords(...customBadWords);
+
 /**
  * 비속어 포함 여부 검사
  * @param {string} text - 검사할 텍스트
