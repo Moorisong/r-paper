@@ -34,3 +34,4 @@ ecosystem.config.js
 
 # Local scripts
 cleanup_db.js
+delete_paper.js
