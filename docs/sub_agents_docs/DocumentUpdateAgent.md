@@ -11,23 +11,6 @@
 
 ### 2. docs/planning/ 문서 처리
 
-**기존 문서 리스트:**
-- `AI_CONTEXT.md` - 프로젝트 컨텍스트
-- `BACKEND_SPEC.md` - 백엔드
-- `CALENDAR_SPEC.md` - 캘린더
-- `CHART_SPEC.md` - 차트
-- `COMFORT_SPEC.md` - 쉼터
-- `DESIGN_SYSTEM.md` - 디자인
-- `MULTI_PET_SPEC.md` - 다묘
-- `PAGE_SPEC.md` - 페이지
-- `PRICING.md` - 가격
-- `TAB_UX_SPEC.md` - 탭 UX
-- `NOTIFICATION_SPEC.md` - 알림
-- `LOCAL_DB_SPEC.md` - 로컬 DB
-- `KAKAO_LOGIN_SUBSCRIPTION_SPEC.md` - 카카오 로그인/구독
-- `PAYMENT_SPEC.md` - Google Play 결제
-- `ADMIN_DASHBOARD_SPEC.md` - 운영자 대시보드
-
 **작업:**
 1. 관련 문서 찾기 (Glob, Grep 활용)
 2. 있으면: Read → Edit로 업데이트
