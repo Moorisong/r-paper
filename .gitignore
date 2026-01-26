@@ -32,6 +32,10 @@ pnpm-debug.log*
 # PM2
 ecosystem.config.js
 
+
 # Local scripts
 cleanup_db.js
 delete_paper.js
+
+# Deployment scripts
+deploy-*.sh
