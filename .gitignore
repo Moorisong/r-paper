@@ -39,3 +39,5 @@ delete_paper.js
 
 # Deployment scripts
 deploy-*.sh
+scripts/*.sh
+backend/*.sh
