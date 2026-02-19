@@ -30,7 +30,7 @@ const messageSchema = new mongoose.Schema({
 // 페이징 쿼리 성능을 위한 복합 인덱스
 messageSchema.index({ paperId: 1, createdAt: -1 });
 
-messageSchema.pre('save', async function (next) {
+messageSchema.pre('validate', async function (next) {
   if (this.isNew || this.isModified('paperId')) {
     try {
       const paper = await RollingPaper.findById(this.paperId);
