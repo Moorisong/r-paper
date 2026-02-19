@@ -37,7 +37,14 @@ messageSchema.pre('save', async function (next) {
       if (!paper) {
         throw new Error('RollingPaper not found');
       }
-      this.expiresAt = paper.expiresAt;
+      // expiresAt이 없는 구형 paper는 createdAt 기준으로 계산
+      if (paper.expiresAt) {
+        this.expiresAt = paper.expiresAt;
+      } else {
+        const expirationDate = new Date(paper.createdAt);
+        expirationDate.setDate(expirationDate.getDate() + CONFIG.TTL_DAYS);
+        this.expiresAt = expirationDate;
+      }
     } catch (error) {
       return next(error);
     }
