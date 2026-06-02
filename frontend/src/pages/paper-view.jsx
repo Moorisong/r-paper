@@ -246,10 +246,12 @@ const PaperView = () => {
                   <button
                     onClick={loadMore}
                     disabled={isLoadingMore}
-                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200 disabled:opacity-50"
+                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200 disabled:cursor-not-allowed flex justify-center w-full"
                   >
                     {isLoadingMore ? (
-                      '불러오는 중...'
+                      <span className="flex justify-center w-full">
+                        <LoadingSpinner size="sm" />
+                      </span>
                     ) : (
                       <span className="flex items-center gap-1">
                         더 보기 <span className="text-xs">▼</span>

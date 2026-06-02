@@ -32,7 +32,7 @@ export const MessageCard = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{
         duration: 0.5,
-        delay: index * 0.1,
+        delay: (index % 10) * 0.1,
         ease: 'easeOut',
       }}
       className={cn(
