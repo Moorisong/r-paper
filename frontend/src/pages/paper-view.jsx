@@ -181,8 +181,8 @@ const PaperView = () => {
 
               {paper.title && (
                 <h1
-                  className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-6"
-                  style={{ marginTop: '10px' }}
+                  className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-6 text-center px-4 sm:px-6 w-full"
+                  style={{ marginTop: '10px', wordBreak: 'keep-all', overflowWrap: 'break-word' }}
                 >
                   {paper.title}
                 </h1>
