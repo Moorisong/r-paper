@@ -3,6 +3,8 @@
 const mongoose = require('mongoose');
 const { CONFIG } = require('../constants');
 
+const RollingPaper = require('./rolling-paper');
+
 const messageSchema = new mongoose.Schema({
   paperId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -17,11 +19,33 @@ const messageSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  expiresAt: {
+    type: Date,
+    required: true,
+    index: { expires: 0 }
   }
 });
 
 // 페이징 쿼리 성능을 위한 복합 인덱스
 messageSchema.index({ paperId: 1, createdAt: -1 });
+
+messageSchema.pre('validate', async function () {
+  if (this.isNew || this.isModified('paperId')) {
+    const paper = await RollingPaper.findById(this.paperId);
+    if (!paper) {
+      throw new Error('RollingPaper not found');
+    }
+    // expiresAt이 없는 구형 paper는 createdAt 기준으로 계산
+    if (paper.expiresAt) {
+      this.expiresAt = paper.expiresAt;
+    } else {
+      const expirationDate = new Date(paper.createdAt);
+      expirationDate.setDate(expirationDate.getDate() + CONFIG.TTL_DAYS);
+      this.expiresAt = expirationDate;
+    }
+  }
+});
 
 const Message = mongoose.model('Message', messageSchema);
 

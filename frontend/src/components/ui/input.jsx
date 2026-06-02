@@ -24,6 +24,7 @@ export const Input = forwardRef(({
             'input-modern w-full',
             themedClass,
             error && 'border-red-400 focus:border-red-400 focus:ring-red-400/20',
+            maxLength && '!pr-16', // Override .input-modern's padding right
             className
           )}
           maxLength={maxLength}

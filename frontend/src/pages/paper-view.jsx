@@ -88,25 +88,61 @@ const PaperView = () => {
 
   if (paperError || !paper) {
     return (
-      <PageContainer centered className="py-10 sm:py-12">
-        <div className="w-full mx-auto" style={{ paddingLeft: '10px', paddingRight: '10px', maxWidth: '448px' }}>
-          <div className="glass-card rounded-3xl px-8 py-10 text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 bg-red-50 text-2xl">
+      <PageContainer centered className="flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="w-full mx-auto px-4"
+          style={{ maxWidth: '448px' }}
+        >
+          <div 
+            className="bg-white text-center border border-gray-100 flex flex-col items-center"
+            style={{ 
+              borderRadius: '32px', 
+              padding: '60px 32px',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.06)'
+            }}
+          >
+            
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="inline-flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 shadow-sm text-5xl"
+              style={{
+                width: '96px',
+                height: '96px',
+                borderRadius: '28px',
+                marginBottom: '40px'
+              }}
+            >
               😢
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
+            </motion.div>
+            
+            <h2 
+              className="text-2xl font-extrabold text-gray-900 tracking-tight"
+              style={{ marginBottom: '16px' }}
+            >
               페이지를 찾을 수 없어요
             </h2>
-            <p className="text-gray-500 text-sm mb-8">
+            
+            <p 
+              className="text-gray-500 text-[15px] leading-relaxed mx-auto break-keep"
+              style={{ 
+                marginBottom: '48px',
+                maxWidth: '240px'
+              }}
+            >
               {paperError || '롤링페이퍼가 삭제되었거나 존재하지 않습니다'}
             </p>
-            <Link to="/">
-              <Button size="lg" className="w-full">
+            
+            <Link to="/" className="w-full">
+              <Button size="lg" className="w-full text-base font-bold shadow-sm" style={{ height: '56px' }}>
                 새 롤링페이퍼 만들기
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </PageContainer>
     );
   }
@@ -181,8 +217,8 @@ const PaperView = () => {
 
               {paper.title && (
                 <h1
-                  className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-6"
-                  style={{ marginTop: '10px' }}
+                  className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-6 text-center px-4 sm:px-6 w-full"
+                  style={{ marginTop: '10px', wordBreak: 'keep-all', overflowWrap: 'break-word' }}
                 >
                   {paper.title}
                 </h1>
@@ -246,10 +282,12 @@ const PaperView = () => {
                   <button
                     onClick={loadMore}
                     disabled={isLoadingMore}
-                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200 disabled:opacity-50"
+                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200 disabled:cursor-not-allowed flex justify-center w-full"
                   >
                     {isLoadingMore ? (
-                      '불러오는 중...'
+                      <span className="flex justify-center w-full">
+                        <LoadingSpinner size="sm" />
+                      </span>
                     ) : (
                       <span className="flex items-center gap-1">
                         더 보기 <span className="text-xs">▼</span>
@@ -276,7 +314,10 @@ const PaperView = () => {
                 </Button>
               </div>
             ) : (
-              <div className="text-center py-4 px-6 bg-gray-50 rounded-2xl">
+              <div 
+                className="text-center py-4 px-6 bg-gray-50 rounded-2xl"
+                style={{ marginTop: '30px', marginBottom: '30px' }}
+              >
                 <p className="text-sm text-gray-500">
                   💌 롤링페이퍼 주인은 메시지를 작성할 수 없어요
                 </p>
