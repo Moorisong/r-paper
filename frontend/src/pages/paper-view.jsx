@@ -276,7 +276,10 @@ const PaperView = () => {
                 </Button>
               </div>
             ) : (
-              <div className="text-center py-4 px-6 bg-gray-50 rounded-2xl">
+              <div 
+                className="text-center py-4 px-6 bg-gray-50 rounded-2xl"
+                style={{ marginTop: '30px', marginBottom: '30px' }}
+              >
                 <p className="text-sm text-gray-500">
                   💌 롤링페이퍼 주인은 메시지를 작성할 수 없어요
                 </p>
