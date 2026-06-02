@@ -12,9 +12,9 @@
 
 require('dotenv').config();
 const mongoose = require('mongoose');
-const connectDatabase = require('./config/database');
-const RollingPaper = require('./models/rolling-paper');
-const Message = require('./models/message');
+const connectDatabase = require('../config/database');
+const RollingPaper = require('../models/rolling-paper');
+const Message = require('../models/message');
 
 async function migrate() {
     try {
