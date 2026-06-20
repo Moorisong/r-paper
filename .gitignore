@@ -41,3 +41,8 @@ delete_paper.js
 deploy-*.sh
 scripts/*.sh
 backend/*.sh
+
+
+# AI agent working rules
+docs/
+.antigravity/
