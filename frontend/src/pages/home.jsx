@@ -4,6 +4,7 @@ import { PageContainer } from '@/components/layout/page-container';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCreatePaper } from '@/hooks/use-create-paper';
+import { HarooBoxBanner } from '@/components/layout/haroo-box-banner';
 import { APP_NAME, APP_DESCRIPTION, LIMITS, MESSAGES } from '@/constants';
 
 const Home = () => {
@@ -23,7 +24,7 @@ const Home = () => {
   };
 
   return (
-    <PageContainer centered className="py-10 sm:py-12">
+    <PageContainer centered={false} className="pt-8 pb-12 sm:pt-12 sm:pb-16">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,21 +32,26 @@ const Home = () => {
         className="w-full mx-auto"
         style={{ paddingLeft: '10px', paddingRight: '10px', maxWidth: '448px' }}
       >
+        {/* 카드 밖 상단 하루상자 바로가기 배너 (상단 여백 40px 확실히 확보) */}
+        <div className="w-full flex justify-center" style={{ marginTop: '40px', marginBottom: '60px' }}>
+          <HarooBoxBanner />
+        </div>
+
         {/* Main Card */}
-        <div className="glass-card rounded-3xl px-8 py-8 sm:px-10 sm:py-10">
+        <div className="glass-card rounded-3xl px-8 py-8 sm:px-10 sm:py-10 mt-6">
           {/* Header */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-center mb-6"
+            className="text-center mb-6 flex flex-col items-center"
           >
             {/* Icon */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
               className="inline-flex items-center justify-center w-14 h-14 rounded-2xl"
-              style={{ marginBottom: '20px', marginTop: '-10px', background: 'linear-gradient(135deg, #ffe4e6, #f3e8ff)', boxShadow: '0 8px 16px -4px rgba(254, 205, 211, 0.4)' }}
+              style={{ marginBottom: '20px', background: 'linear-gradient(135deg, #ffe4e6, #f3e8ff)', boxShadow: '0 8px 16px -4px rgba(254, 205, 211, 0.4)' }}
             >
               <span className="text-2xl">💌</span>
             </motion.div>
