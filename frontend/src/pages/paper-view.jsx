@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { LinkCopyModal } from '@/components/paper/link-copy-modal';
 import { LinkWarningBanner } from '@/components/paper/link-warning-banner';
+import { HarooBoxBanner } from '@/components/layout/haroo-box-banner';
 import { usePaper } from '@/hooks/use-paper';
 import { useMessages } from '@/hooks/use-messages';
 import { MESSAGES } from '@/constants';
@@ -182,11 +183,8 @@ const PaperView = () => {
       />
 
       <PageContainer className={cn(
-        "relative z-10 pb-32 flex flex-col items-center"
-      )}
-        style={{
-          paddingTop: showLinkWarningBanner ? '240px' : '160px' // 강제 적용 (기존 pt-40=160px, pt-60=240px)
-        }}>
+        "relative z-10 pt-8 pb-32 sm:pt-12 sm:pb-36 flex flex-col items-center"
+      )}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -196,21 +194,20 @@ const PaperView = () => {
             paddingLeft: '10px',
             paddingRight: '10px',
             maxWidth: '448px',
-            paddingTop: '80px',
-            paddingBottom: '80px',
-            marginTop: showLinkWarningBanner ? '40px' : '0px'
           }}
         >
+          {/* 카드 밖 상단 하루상자 바로가기 배너 (상단 여백 40px 확실히 확보) */}
+          <div className="w-full flex justify-center" style={{ marginTop: '40px', marginBottom: '60px' }}>
+            <HarooBoxBanner />
+          </div>
+
           {/* Main Card */}
-          <div className="bg-white rounded-3xl px-8 py-10 sm:px-12 sm:py-12 min-h-[60vh] flex flex-col overflow-visible border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-3xl px-8 py-10 sm:px-12 sm:py-12 min-h-[60vh] flex flex-col overflow-visible border border-gray-100 shadow-sm mt-6">
 
             {/* Header Section */}
             <div className="flex flex-col items-center">
               <div
                 className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 bg-white border border-gray-100 shadow-sm"
-                style={{
-                  marginTop: '-30px'
-                }}
               >
                 <span className="text-2xl">💌</span>
               </div>

@@ -4,3 +4,8 @@ export const ROUTES = {
   paperView: (slug) => `/r/${slug}`,
   notFound: '*',
 };
+
+export const EXTERNAL_LINKS = {
+  harooBox: 'https://box.haroo.site/',
+};
+

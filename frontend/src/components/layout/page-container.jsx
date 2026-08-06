@@ -8,6 +8,7 @@ export const PageContainer = ({
   backgroundClass = '',
   centered = false,
   showAd = true,
+  showHarooBanner = true,
 }) => {
   return (
     <motion.div
@@ -23,13 +24,13 @@ export const PageContainer = ({
     >
       <div
         className={cn(
-          'relative min-h-screen w-full py-12 sm:py-20',
-          centered && 'flex flex-col items-center justify-center',
+          'relative min-h-screen w-full py-4 sm:py-10 flex flex-col items-center',
+          centered && 'justify-center',
           className
         )}
         style={{
-          paddingLeft: '20px',
-          paddingRight: '20px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
           paddingBottom: showAd ? '70px' : undefined
         }}
       >
