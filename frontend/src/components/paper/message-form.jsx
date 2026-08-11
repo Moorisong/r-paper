@@ -9,8 +9,15 @@ export const MessageForm = ({
   isLoading = false,
   buttonClass = '',
   inputClass = '',
+  paperId = '',
 }) => {
-  const [content, setContent] = useState('');
+  const storageKey = `draft_message_${paperId || 'default'}`;
+  const [content, setContent] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem(storageKey) || '';
+    }
+    return '';
+  });
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -22,6 +29,9 @@ export const MessageForm = ({
     try {
       await onSubmit(content);
       setContent('');
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(storageKey);
+      }
     } catch (err) {
       // 에러 메시지 표시
       setErrorMessage(err.message || '메시지 전송에 실패했습니다.');
@@ -29,9 +39,15 @@ export const MessageForm = ({
   };
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    // 붙여넣기 시에도 500자까지만 잘라서 입력
-    setContent(value.slice(0, LIMITS.messageMaxLength));
+    const value = e.target.value.slice(0, LIMITS.messageMaxLength);
+    setContent(value);
+    if (typeof window !== 'undefined') {
+      if (value) {
+        sessionStorage.setItem(storageKey, value);
+      } else {
+        sessionStorage.removeItem(storageKey);
+      }
+    }
     // 입력 시 에러 메시지 초기화
     if (errorMessage) setErrorMessage('');
   };

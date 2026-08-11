@@ -354,6 +354,7 @@ const PaperView = () => {
             className="max-w-[360px]"
           >
             <MessageForm
+              paperId={paper?.id}
               onSubmit={handleMessageSubmit}
               isLoading={isSending}
               buttonClass=""
