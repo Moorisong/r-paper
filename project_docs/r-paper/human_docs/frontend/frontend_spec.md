@@ -60,7 +60,7 @@ Redux나 Zustand 같은 무거운 외부 전역 상태 관리 툴 대신, 개별
 
 ### 📂 `components/paper/` (롤링페이퍼 도메인 위젯)
 * **`MessageCard.jsx`:** 포스트잇 형태의 개별 메시지. 6가지 랜덤 파스텔톤 배경 테마 및 호버 효과 내장.
-* **`MessageForm.jsx`:** 500자 제한 텍스트영역(Textarea) 및 제출 버튼을 포함한 작성 폼.
+* **`MessageForm.jsx`:** 500자 제한 텍스트영역(Textarea) 및 제출 버튼을 포함한 작성 폼. 작성 중 모달을 닫아도 작성 데이터가 유지되도록 `sessionStorage` 기반 임시 저장(`draft_message_${paperId}`)을 지원하며, 메시지 전송 성공 시 자동 삭제됩니다.
 * **`MessageList.jsx`:** 데이터 매핑 루프(Map) 및 비어있을 때의 엠프티 상태(Empty State) 일러스트/아이콘 처리.
 * **`LinkCopyModal.jsx`:** 생성 성공 화면에서 카카오톡, 클립보드 링크 공유 기능과 닫기 방지(경고 안내) 연동.
 * **`LinkWarningBanner.jsx`:** 주소를 아직 복사하지 않고 닫은 사용자 브라우저 상단에 상주하는 주황색 보존 권장 배너.
