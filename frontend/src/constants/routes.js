@@ -6,6 +6,6 @@ export const ROUTES = {
 };
 
 export const EXTERNAL_LINKS = {
-  harooBox: 'https://box.haroo.site/',
+  harooBox: 'https://box.harooo.co.kr/',
 };
 

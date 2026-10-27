@@ -8,7 +8,7 @@
 
 * **운영체제:** Ubuntu Server (LTS)
 * **웹서버 (Reverse Proxy):** Nginx (`www-data` 권한 적용)
-* **인증서 관리:** Let's Encrypt SSL/TLS 적용 (`r-paper-web.haroo.site`)
+* **인증서 관리:** Let's Encrypt SSL/TLS 적용 (`r-paper-web.harooo.co.kr`)
 * **Node 프로세스 관리자:** PM2
 
 ---
@@ -86,5 +86,5 @@
 ## 🔒 6. Nginx 설정 파일 매핑 정보
 
 Nginx가 static 웹 리소스를 서비스하기 위해 로드하는 설정 구조입니다.
-* **설정 파일 실체:** `/etc/nginx/sites-available/r-paper-web.haroo.site`
-* **활성화 링크:** `/etc/nginx/sites-enabled/r-paper-web.haroo.site`
+* **설정 파일 실체:** `/etc/nginx/sites-available/r-paper-web.harooo.co.kr`
+* **활성화 링크:** `/etc/nginx/sites-enabled/r-paper-web.harooo.co.kr`
