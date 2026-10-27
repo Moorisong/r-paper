@@ -13,7 +13,7 @@
 ### 📦 타깃 경로 구조
 * `/home/ksh/r-paper/backend`: 서버 내 백엔드 코드 소스
 * `/home/ksh/srv/r-paper-web/dist`: 서버 내 프론트엔드 호스팅 루트 디렉토리
-* `/etc/nginx/sites-available/r-paper-web.haroo.site`: Nginx 설정 파일
+* `/etc/nginx/sites-available/r-paper-web.harooo.co.kr`: Nginx 설정 파일
 
 ### 🛠️ 개발 단계 (Step-by-Step 상세 로직)
 1. **Nginx 라우팅 구성**: 리버스 프록시 연결 및 `index.html` 폴백 라우팅 처리 등 Nginx 설정.
