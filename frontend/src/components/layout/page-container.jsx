@@ -31,7 +31,7 @@ export const PageContainer = ({
         style={{
           paddingLeft: '16px',
           paddingRight: '16px',
-          paddingBottom: showAd ? '120px' : undefined
+          paddingBottom: showAd ? '70px' : undefined
         }}
       >
         {children}
@@ -60,7 +60,7 @@ export const PageContainer = ({
           >
             <KakaoAdFit
               width={320}
-              height={100}
+              height={50}
             />
           </div>
         </div>
