@@ -59,7 +59,6 @@ export const PageContainer = ({
             }}
           >
             <KakaoAdFit
-              unit="DAN-CO9B3C1kNlSWapzN"
               width={320}
               height={50}
             />

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 export const KakaoAdFit = ({
-    unit = 'DAN-CO9B3C1kNlSWapzN',
+    unit = 'DAN-vxiP9rrS83zZspVD',
     width = 320,
     height = 50,
     className = ''
