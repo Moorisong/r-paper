@@ -58,6 +58,13 @@ Redux나 Zustand 같은 무거운 외부 전역 상태 관리 툴 대신, 개별
 * **`Modal.jsx`:** 외부 클릭 시 닫힘 제어, Framer Motion 기반 부드러운 오버레이 팝업.
 * **`LoadingSpinner.jsx`:** CSS 로테이션 애니메이션 기반의 부드러운 로딩 지시자.
 
+### 📂 `components/layout/` (레이아웃 위젯)
+* **`PageContainer.jsx`:** 전역 배경, 패딩 및 반응형 컨테이너를 담당하며, 하단에 고정된 카카오 애드핏 배너 광고(`KakaoAdFit`, 320x50)와 상단 하루상자 바로가기 배너(`HarooBoxBanner`)의 노출을 제어합니다.
+* **`HarooBoxBanner.jsx`:** 하루상자 패밀리 서비스 링크(`https://harooo.co.kr/`)로 연결되는 상단 안내 배너.
+
+### 📂 `components/ad/` (광고 컴포넌트)
+* **`KakaoAdFit.jsx`:** 카카오 애드핏 Web SDK(`//t1.kakaocdn.net/kas/static/ba.min.js`)를 비동기 로드하여 320x50 규격의 배너 광고(`DAN-vxiP9rrS83zZspVD`)를 렌더링하고, 컴포넌트 언마운트 시 DOM을 정리(Clean-up)하는 전용 위젯.
+
 ### 📂 `components/paper/` (롤링페이퍼 도메인 위젯)
 * **`MessageCard.jsx`:** 포스트잇 형태의 개별 메시지. 6가지 랜덤 파스텔톤 배경 테마 및 호버 효과 내장.
 * **`MessageForm.jsx`:** 500자 제한 텍스트영역(Textarea) 및 제출 버튼을 포함한 작성 폼. 작성 중 모달을 닫아도 작성 데이터가 유지되도록 `sessionStorage` 기반 임시 저장(`draft_message_${paperId}`)을 지원하며, 메시지 전송 성공 시 자동 삭제됩니다.

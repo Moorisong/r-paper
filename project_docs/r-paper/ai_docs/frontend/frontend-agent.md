@@ -14,7 +14,7 @@
 ### 📦 패키지 및 타깃 클래스 경로 구조
 * `src/main.jsx`, `src/App.jsx`: 진입점 및 라우팅 제어
 * `src/pages/`: 화면 단위 페이지 (home, paper-view, not-found)
-* `src/components/`: 재사용 UI 컴포넌트 (`ui/`, `layout/`, `paper/`)
+* `src/components/`: 재사용 UI 컴포넌트 (`ui/`, `layout/`, `paper/`, `ad/`)
 * `src/hooks/`: 비즈니스 로직 Custom Hooks
 * `src/services/`: API 통신(Axios) 클라이언트
 
